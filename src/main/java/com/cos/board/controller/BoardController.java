@@ -40,13 +40,15 @@ public class BoardController {
 	}
 	
 	@PostMapping("/save")
-	public String save(BoardSaveRequestDto dto) {
+	@ResponseBody
+	public String save(@RequestBody BoardSaveRequestDto dto) {
+		System.out.println("asdfasdfasdf");
 		System.out.println(dto);
 		
 //		Board boardEntity = BoardSaveRequestDto.toEntity(dto);
 //		boardRepository.save(boardEntity);
 		boardService.글쓰기(dto);
-		return "redirect:/list"; // 그냥 list로 때리면 목록을 안가지고 가니까 redirect:/ 해줘야 밑에
+		return "ok"; // 그냥 list로 때리면 목록을 안가지고 가니까 redirect:/ 해줘야 밑에
 	}
 	
 	// 스프링에서 Controller의 메서드의 파라메터부분은 자동 DI가 된다. 

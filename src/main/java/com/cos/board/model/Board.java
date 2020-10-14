@@ -6,6 +6,7 @@ package com.cos.board.model;
  */
 import java.sql.Timestamp;
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,16 +44,12 @@ public class Board {
 	@CreationTimestamp // 데이터 입력 시 자동으로 now()값이 들어감 
 	private Timestamp createDate;
 	
-	//@DateTimeFormat(pattern = "yyyy-MM-dd")
-	//public Timestamp getCreateDate() {
+	public String getCreateDate() {
+		// 방법1.
+		//return createDate.toString().substring(0, 10);
 		
-	//	return createDate;
-	//}
-	
-	//public Timestamp getCreateDate() {
-		//return Timestamp.valueOf(createDate.toString().substring(0, 10));
-	//	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	//	Timestamp format_createDate = createDate;
-	//	return format_createDate;
-	//}
+		// 방법2.
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		return df.format(createDate);
+	}
 }
