@@ -41,9 +41,13 @@ public class BoardService {
 	
 	// RuntimeException 걸려있어야 rollback 할 수 있고, try catch문 걸지 않아도 됨 
 	// 서비스에서는 트랙잭션 처리를 하니까... save를 2개 이상할 때 rollback이 꼭 필요함 
+	@Transactional
 	public Board 글상세보기(int id) throws Exception {
 		Board board = boardRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("ID값 잘못들어왔어요"));
+		
+		// 더티체킹으로 조회수 증가
+		board.setReadCount(board.getReadCount() + 1);
 		return board;
 	}
 	
@@ -61,7 +65,7 @@ public class BoardService {
 		//boardEntity.setId(id);
 		//boardRepository.save(boardEntity);
 		
-		// 방법2.더티 체킹: 영속성 컨텍스트의 오브젝트의 변경을 감지하여 update 한다. 
+		// 방법2. 더티 체킹: 영속성 컨텍스트의 오브젝트의 변경을 감지하여 update 한다. 
 		Board boardEntity = boardRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("ID값 잘못들어왔어요"));
 		boardEntity.setTitle(dto.getTitle());
