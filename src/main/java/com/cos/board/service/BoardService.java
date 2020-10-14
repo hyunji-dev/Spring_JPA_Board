@@ -53,7 +53,8 @@ public class BoardService {
 	
 	@Transactional
 	public void 글삭제하기(int id) {
-		boardRepository.deleteById(id); // 글 하나 삭제 
+		//boardRepository.deleteById(id); // 글 하나 삭제
+		boardRepository.mDeleteById(id);
 	}
 	
 	@Transactional
@@ -66,8 +67,9 @@ public class BoardService {
 		//boardRepository.save(boardEntity);
 		
 		// 방법2. 더티 체킹: 영속성 컨텍스트의 오브젝트의 변경을 감지하여 update 한다. 
-		Board boardEntity = boardRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("ID값 잘못들어왔어요"));
+		//Board boardEntity = boardRepository.findById(id)
+		//		.orElseThrow(() -> new RuntimeException("ID값 잘못들어왔어요"));
+		Board boardEntity = boardRepository.mFindById(id);
 		boardEntity.setTitle(dto.getTitle());
 		boardEntity.setContent(dto.getContent());
 	}
