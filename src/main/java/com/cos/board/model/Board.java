@@ -5,6 +5,7 @@ package com.cos.board.model;
  * 후행: BoardTest.java
  */
 import java.sql.Timestamp;
+import java.text.Format;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,10 +39,20 @@ public class Board {
 	private String title, content;
 	private int readCount;
 	
+	
 	@CreationTimestamp // 데이터 입력 시 자동으로 now()값이 들어감 
 	private Timestamp createDate;
 	
+	//@DateTimeFormat(pattern = "yyyy-MM-dd")
 	//public Timestamp getCreateDate() {
-	//	return Timestamp.valueOf(createDate.toString().substring(0, 10));
+		
+	//	return createDate;
+	//}
+	
+	//public Timestamp getCreateDate() {
+		//return Timestamp.valueOf(createDate.toString().substring(0, 10));
+	//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	//	Timestamp format_createDate = createDate;
+	//	return format_createDate;
 	//}
 }
