@@ -15,20 +15,22 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.board.config.ex.MyArgsNotFound;
 import com.cos.board.dto.BoardSaveRequestDto;
 import com.cos.board.model.Board;
 import com.cos.board.repository.BoardRepository;
+import com.cos.board.service.BoardService;
 
 @Controller // 파일 리턴
-//@RequestMapping("/board") // 이 주소로 들어옴 
+//@RequestMapping("/board") // 이 주소로 들어옴 // 주소에는 명사만 넣고 동사를 넣지 말 것!
 public class BoardController {
 	
-	// 의존성 주입 DI
 	@Autowired
-	private BoardRepository boardRepository;
+	private BoardService boardService;
 	
 	// http://localhost:8000/board/saveForm : RequestMapping 존재 시 
 	// http://localhost:8000/saveForm
@@ -41,16 +43,17 @@ public class BoardController {
 	public String save(BoardSaveRequestDto dto) {
 		System.out.println(dto);
 		
-		Board boardEntity = BoardSaveRequestDto.toEntity(dto);
-		boardRepository.save(boardEntity);
+//		Board boardEntity = BoardSaveRequestDto.toEntity(dto);
+//		boardRepository.save(boardEntity);
+		boardService.글쓰기(dto);
 		return "redirect:/list"; // 그냥 list로 때리면 목록을 안가지고 가니까 redirect:/ 해줘야 밑에
 	}
 	
 	// 스프링에서 Controller의 메서드의 파라메터부분은 자동 DI가 된다. 
-	@GetMapping("/list")
+	@GetMapping({"", "/", "/list"})
 	public String list(Model model) {
-		List<Board> boards = boardRepository.findAll(); // board테이블 목록 가져옴
-		model.addAttribute("boards", boards);
+//		List<Board> boards = boardRepository.findAll(); // board테이블 목록 가져옴
+		model.addAttribute("boards", boardService.글목록보기());
 		return "list";
 	}
 	
@@ -83,23 +86,31 @@ public class BoardController {
 		//Board board = boardRepository.findById(id).orElseGet(() -> new Board());
 
 
-		Board board = boardRepository.findById(id).orElseThrow(new Supplier<Exception>() { 
-			// Supplier<익셉션 타입이 들어감>
-			@Override
-			public Exception get() {
-				// TODO Auto-generated method stub
-				return new Exception("ID값 잘못들어왔어요");
-			}
-		});
+//		Board board = boardRepository.findById(id).orElseThrow(new Supplier<Exception>() { 
+//			// Supplier<익셉션 타입이 들어감>
+//			@Override
+//			public Exception get() {
+//				// TODO Auto-generated method stub
+//				return new Exception("ID값 잘못들어왔어요");
+//			}
+//		});
 		
-		model.addAttribute("board", board);
+		model.addAttribute("board", boardService.글상세보기(id));
 		return "detail";
 	}
 	
 	@DeleteMapping("/board/{id}")
 	@ResponseBody // 데이터 응답으로 변경함 
 	public String delete(@PathVariable int id) {
-		boardRepository.deleteById(id); // 글 하나 삭제 
+//		boardRepository.deleteById(id); // 글 하나 삭제 
+		boardService.글삭제하기(id);
+		return "ok";
+	}
+	
+	@PutMapping("/board/{id}")
+	@ResponseBody // 데이터 응답으로 변경함 
+	public String update(@PathVariable int id, @RequestBody BoardSaveRequestDto dto) {
+		boardService.글수정하기(id, dto);
 		return "ok";
 	}
 }
