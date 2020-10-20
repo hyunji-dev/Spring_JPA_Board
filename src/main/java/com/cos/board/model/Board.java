@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +38,11 @@ public class Board {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 해당 DB 번호증가 전략을 따라감
 	private int id;
 	
-	private String title, content;
+	private String title;
+	
+	@Column(length = 10000000) // 컬럼 사이즈 변경 
+	private String content;
+	
 	private int readCount;
 	
 	

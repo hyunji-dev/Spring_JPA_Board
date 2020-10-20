@@ -4,8 +4,15 @@
 	선행: list.jsp
 	후행: detail.jsp
 -->
+
+	<style>
+	.bg-4 {
+	  background-color: #2f2f2f;
+	  color: #ffffff;
+	}
+	</style>
 		
-		<footer>
+		<footer class="container-fluid bg-4 text-center">
 			<br /><br />
 			<hr />
 			<p>주소: 부산IT교육센터</p>

@@ -10,6 +10,8 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +36,8 @@ public class BoardService {
 	
 	// select 하는데 트랜잭션이 필요한 이유는? 
 	@Transactional(readOnly = true)
-	public List<Board> 글목록보기() {
-		return boardRepository.findAll(); // board테이블 목록 가져옴
+	public Page<Board> 글목록보기(Pageable pageable) { // Pageable pageable: 페이징, 받을 때 Page로 받아줘야 함 
+		return boardRepository.findAll(pageable); // board테이블 목록 가져옴
 		// 리턴받을 게 있음(목록) -> List<<Board> 로 받아주면 됨 
 	}
 	

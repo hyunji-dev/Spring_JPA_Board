@@ -11,7 +11,7 @@
 			<h1>게시글 상세보기</h1>
 			<hr />
 			
-			<table border="1">
+			<table class="table table-hover">
 				<tr>
 					<td>ID</td>
 					<td>TITLE</td>
@@ -23,19 +23,31 @@
 				<tr>
 					<td>${board.id }</td>
 					<td><input id="title" type="text" value="${board.title }" /> </td>
-					<td><input id="content" type="text" value="${board.content }" /></td>
+<%-- 					<td><input id="content" type="text" value="${board.content }" /></td> --%>
+					<td><textarea id="content" name="content" >${board.content }</textarea></td>
 					<td>${board.readCount }</td>
 					<td>${board.createDate }</td>
 				</tr>
 				
 			</table>
 			
-			<button onclick="deleteBoard(${board.id })" >삭제</button>
-			<button onclick="updateBoard(${board.id })" >수정</button>
+			<button class="btn btn-danger" onclick="deleteBoard(${board.id })" >삭제</button>
+			<button class="btn btn-info" onclick="updateBoard(${board.id })" >수정</button>
 			
 		</main>
 
 	<script type="text/javascript">
+
+		// 썸머노트 스타일 지정
+		$(document).ready(function() {
+		     $('#content').summernote({
+		             height: 300,                 // set editor height
+		             minHeight: null,             // set minimum height of editor
+		             maxHeight: null,             // set maximum height of editor
+		             focus: true                  // set focus to editable area after initializing summernote
+		     });
+		});
+		
 		function deleteBoard(id) {
 			fetch("/board/" + id, {
 				method: "delete"

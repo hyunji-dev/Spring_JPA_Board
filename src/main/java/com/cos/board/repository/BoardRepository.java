@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.cos.board.model.Board;
 
 // 자동 IoC 등록됨(어노테이션 안붙여줘도 됨)  
-public interface BoardRepository extends JpaRepository<Board, Integer>{ // JpaRepository<니가 관리하고 있는 모델명, P.K의 타입>
+public interface BoardRepository extends JpaRepository<Board, Integer> { // JpaRepository<니가 관리하고 있는 모델명, P.K의 타입>
 	// Naming Query: 간단한 쿼리문의 경우 사용하기 좋지만, 쿼리 알면 굳이 이렇게 쓰지 말고 NativeQuery를 사용할 것 
 	
 	// SELECT * FROM BOARD WHERE TITLE = ?1 -> 쿼리를 날려줌, ?에 String title이 들어감  

@@ -4,6 +4,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 /*
  * 2020.10.13-2
  * 선행: BoardRepository.java
@@ -42,7 +46,6 @@ public class BoardController {
 	@PostMapping("/save")
 	@ResponseBody
 	public String save(@RequestBody BoardSaveRequestDto dto) {
-		System.out.println("asdfasdfasdf");
 		System.out.println(dto);
 		
 //		Board boardEntity = BoardSaveRequestDto.toEntity(dto);
@@ -51,12 +54,22 @@ public class BoardController {
 		return "ok"; // 그냥 list로 때리면 목록을 안가지고 가니까 redirect:/ 해줘야 밑에
 	}
 	
+	// @PageableDefault(size = 5, sort = "id", direction = Direction.DESC) Pageable pageable : 5개씩 페이징
 	// 스프링에서 Controller의 메서드의 파라메터부분은 자동 DI가 된다. 
 	@GetMapping({"", "/", "/list"})
-	public String list(Model model) {
+	public String list(Model model, @PageableDefault(size = 4, sort = "id", direction = Direction.DESC) Pageable pageable) { 
 //		List<Board> boards = boardRepository.findAll(); // board테이블 목록 가져옴
-		model.addAttribute("boards", boardService.글목록보기());
+		model.addAttribute("boards", boardService.글목록보기(pageable));
 		return "list";
+	}
+	
+	// http://localhost:8000/list/test/?page=1
+	// 페이징 테스트용 -> 제이슨으로 된 데이터 원형을 볼 수 있음 
+	// @PageableDefault(size = 5, sort = "id", direction = Direction.DESC) Pageable pageable : 페이징
+	@GetMapping("/list/test")
+	@ResponseBody
+	public Page<Board> listTest(@PageableDefault(size = 5, sort = "id", direction = Direction.DESC) Pageable pageable) { 
+		return boardService.글목록보기(pageable);
 	}
 	
 	@GetMapping("/board/{id}")
